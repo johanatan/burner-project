@@ -25,8 +25,11 @@ trait BurnerService extends HttpService {
     path("event") {
       post {
         entity(as[BurnerEvent]) { event =>
-          if (event.`type` == "inboundMedia")
-            counts.put(event.payload, counts(event.payload) + 1)
+          event.`type` match {
+            case "inboundMedia" => counts.put(event.payload, counts(event.payload) + 1)
+            case "inboundText" => counts.keys.find(event.payload.contains(_)).foreach(k => counts.put(k, counts(k) + 1))
+            case _ => ;
+          }
           complete {StatusCodes.OK}
         }
       }

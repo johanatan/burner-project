@@ -1,0 +1,6 @@
+.ensime
+.ensime_cache
+.idea/
+burner.iml
+target/
+
